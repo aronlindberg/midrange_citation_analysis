@@ -1,4 +1,3 @@
-setwd("/Users/Aron/github/local/midrange_citation_analysis/")
 library(gdata)
 library(poweRlaw)
 library(dunn.test)
