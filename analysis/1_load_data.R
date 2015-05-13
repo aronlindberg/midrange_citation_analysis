@@ -1,5 +1,5 @@
 # First we load the data for the mean-comparisons
-data <- read.csv("middle_range_coding_v4.csv", header = TRUE, fill = FALSE, fileEncoding = "latin1")
+data <- read.csv(paste0(getwd(), "/data/middle_range_coding_v4.csv"), header = TRUE, fill = FALSE, fileEncoding = "latin1")
 
 data$Classification..instantiation..modifying..or.extending
 data$Total.Citations.by..ISI.Web.of.Science...SSCI. 
@@ -25,8 +25,8 @@ instantiation_total_cites <- subset(instantiation_total_cites, instantiation_tot
 modifying_total_cites <- subset(modifying_total_cites, modifying_total_cites != 0)
 extending_total_cites <- subset(extending_total_cites, extending_total_cites != 0)
 
-# Load and reverse data for latent growth curve modeling
-temp <- read.csv("exploration.csv", header = TRUE, fill = FALSE, fileEncoding = "latin1")
+# Load and reverse data for latent growth curve modeling for exploration/exploitation
+temp <- read.csv(paste0(getwd(), "/data/exploration.csv"), header = TRUE, fill = FALSE, fileEncoding = "latin1")
 exploration_raw <- temp
 temp <- temp %>% 
   gather(new.Years, X, -Year) %>%  # convert rows to one column
@@ -39,9 +39,9 @@ temp <- temp %>%
 
 temp[is.na(temp)] <- 0 # replace NA with 0
 exploration <- temp
-write.csv(exploration, file = "exploration_reversed.csv")
+write.csv(exploration, file = paste0(getwd(), "/data/exploration_reversed.csv"))
 
-temp <- read.csv("exploitation.csv", header = TRUE, fill = FALSE, fileEncoding = "latin1")
+temp <- read.csv(paste0(getwd(), "/data/exploitation.csv"), header = TRUE, fill = FALSE, fileEncoding = "latin1")
 exploitation_raw <- temp
 temp <- temp %>% 
   gather(new.Years, X, -Year) %>%  # convert rows to one column
@@ -54,4 +54,7 @@ temp <- temp %>%
 
 temp[is.na(temp)] <- 0 # replace NA with 0
 exploitation <- temp
-write.csv(exploitation, file = "exploitation_reversed.csv")
+write.csv(exploitation, file = paste0(getwd(), "/data/exploitation_reversed.csv"))
+
+# Load and reverse data for latent growth curve modeling for instantiation/modification/extension
+
