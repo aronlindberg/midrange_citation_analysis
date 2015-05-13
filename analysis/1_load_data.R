@@ -58,3 +58,56 @@ write.csv(exploitation, file = paste0(getwd(), "/data/exploitation_reversed.csv"
 
 # Load and reverse data for latent growth curve modeling for instantiation/modification/extension
 
+## Instantiation
+temp <- read.csv(paste0(getwd(), "/data/instantiation.csv"), header = TRUE, fill = FALSE, fileEncoding = "latin1")
+temp <- cbind(temp[1], temp[9:29])
+instantiation_raw <- temp
+
+temp <- temp %>% 
+  gather(new.Years, X, -Year) %>%  # convert rows to one column
+  mutate(Year.temp=paste0(rownames(temp), "-", Year)) %>% # concatenate the Year with row number to make them unique
+  mutate(new.Years = as.numeric(gsub("X", "", new.Years)), diff = new.Years-Year+1) %>% # calculate the difference to get the yr0 yr1 and so on
+  mutate(diff=paste0("yr", stri_sub(paste0("0", (ifelse(diff>0, diff, 0))), -2, -1))) %>% # convert the differences in Yr01 ...
+  select(-new.Years) %>% filter(diff != "yr00") %>% # drop new.Years column
+  spread(diff, X) %>%  # convert column to rows
+  select(-Year.temp) # Drop Year.temp column
+
+temp[is.na(temp)] <- 0 # replace NA with 0
+instantiation <- temp
+write.csv(instantiation, file = paste0(getwd(), "/data/instantiation_reversed.csv"))
+
+## Modification
+temp <- read.csv(paste0(getwd(), "/data/modification.csv"), header = TRUE, fill = FALSE, fileEncoding = "latin1")
+temp <- cbind(temp[1], temp[9:29])
+modification_raw <- temp
+
+temp <- temp %>% 
+  gather(new.Years, X, -Year) %>%  # convert rows to one column
+  mutate(Year.temp=paste0(rownames(temp), "-", Year)) %>% # concatenate the Year with row number to make them unique
+  mutate(new.Years = as.numeric(gsub("X", "", new.Years)), diff = new.Years-Year+1) %>% # calculate the difference to get the yr0 yr1 and so on
+  mutate(diff=paste0("yr", stri_sub(paste0("0", (ifelse(diff>0, diff, 0))), -2, -1))) %>% # convert the differences in Yr01 ...
+  select(-new.Years) %>% filter(diff != "yr00") %>% # drop new.Years column
+  spread(diff, X) %>%  # convert column to rows
+  select(-Year.temp) # Drop Year.temp column
+
+temp[is.na(temp)] <- 0 # replace NA with 0
+modification <- temp
+write.csv(modification, file = paste0(getwd(), "/data/modification_reversed.csv"))
+
+## Extension
+temp <- read.csv(paste0(getwd(), "/data/extension.csv"), header = TRUE, fill = FALSE, fileEncoding = "latin1")
+temp <- cbind(temp[1], temp[9:29])
+extension_raw <- temp
+
+temp <- temp %>% 
+  gather(new.Years, X, -Year) %>%  # convert rows to one column
+  mutate(Year.temp=paste0(rownames(temp), "-", Year)) %>% # concatenate the Year with row number to make them unique
+  mutate(new.Years = as.numeric(gsub("X", "", new.Years)), diff = new.Years-Year+1) %>% # calculate the difference to get the yr0 yr1 and so on
+  mutate(diff=paste0("yr", stri_sub(paste0("0", (ifelse(diff>0, diff, 0))), -2, -1))) %>% # convert the differences in Yr01 ...
+  select(-new.Years) %>% filter(diff != "yr00") %>% # drop new.Years column
+  spread(diff, X) %>%  # convert column to rows
+  select(-Year.temp) # Drop Year.temp column
+
+temp[is.na(temp)] <- 0 # replace NA with 0
+extension <- temp
+write.csv(extension, file = paste0(getwd(), "/data/extension_reversed.csv"))
