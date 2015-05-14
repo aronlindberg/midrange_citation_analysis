@@ -1,33 +1,35 @@
 # Latent growth curve modelling
 # First using the raw data
-exploitation_growth <- exploitation_raw
-exploitation_growth <- exploitation_growth[,2:21]
-# exploitation_growth <- scale(exploitation_growth)  
-colnames(exploitation_growth) <- c("t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9", "t10", "t11", "t12", "t13", "t14", "t15", "t16", "t17", "t18", "t19", "t20")
+instantiation_growth <- instantiation_raw
+instantiation_growth <- instantiation_growth[,2:21]
+colnames(instantiation_growth) <- c("t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9", "t10", "t11", "t12", "t13", "t14", "t15", "t16", "t17", "t18", "t19", "t20")
 
-exploration_growth <- exploration_raw
-exploration_growth <- exploration_growth[,2:21]
-# exploration_growth <- scale(exploration_growth)
-colnames(exploration_growth) <- c("t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9", "t10", "t11", "t12", "t13", "t14", "t15", "t16", "t17", "t18", "t19", "t20")
+modification_growth <- modification_raw
+modification_growth <- modification_growth[,2:21]
+colnames(modification_growth) <- c("t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9", "t10", "t11", "t12", "t13", "t14", "t15", "t16", "t17", "t18", "t19", "t20")
 
-a.vector <- rep("Exploration", nrow(exploration_growth))
-exploration_growth$type <- a.vector
+extension_growth <- extension_raw
+extension_growth <- extension_growth[,2:21]
+colnames(extension_growth) <- c("t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9", "t10", "t11", "t12", "t13", "t14", "t15", "t16", "t17", "t18", "t19", "t20")
 
-b.vector <- rep("Exploitation", nrow(exploitation_growth))
-exploitation_growth$type <- b.vector
+a.vector <- rep("Instantiation", nrow(instantiation_growth))
+instantiation_growth$type <- a.vector
 
-growth_data <- rbind(exploration_growth, exploitation_growth)
+b.vector <- rep("Modification", nrow(modification_growth))
+modification_growth$type <- b.vector
+
+c.vector <- rep("Extension", nrow(extension_growth))
+extension_growth$type <- c.vector
+
+growth_data <- rbind(instantiation_growth, modification_growth, extension_growth)
 
 # Multi-group Growth model
 model <- ' i =~ 1*t2 + 1*t3 + 1*t4 + 1*t5 + 1*t6 + 1*t7 + 1*t8 + 1*t9 + 1*t10 + 1*t11 + 1*t12 + 1*t13+ 1*t14 + 1*t15 + 1*t16 + 1*t17 + 1*t18 + 1*t19 + 1*t20
-s =~ 0*t2 + 1*t3 + 2*t4 + 3*t5 + 4*t6 + 5*t7 + 6*t8 + 7*t9 + 8*t10 + 9*t11 + 10*t12 + 11*t13 + 12*t14 + 13*t15 + 14*t16 + 15*t17 + 16*t18 + 17*t19 + 18*t20 
-t2 ~~ 0.01*t2
-t16 ~~ 0.01*t16'
+s =~ 0*t2 + 1*t3 + 2*t4 + 3*t5 + 4*t6 + 5*t7 + 6*t8 + 7*t9 + 8*t10 + 9*t11 + 10*t12 + 11*t13 + 12*t14 + 13*t15 + 14*t16 + 15*t17 + 16*t18 + 17*t19 + 18*t20'
 fit_constrained <- growth(model, data=growth_data, group = "type", group.equal = c("means"))
 fit_UNconstrained <- growth(model, data=growth_data, group = "type")
 summary(fit_constrained)
 summary(fit_UNconstrained)
-
 
 # Then using the "from year1 data"
 exploitation_growth <- exploitation
