@@ -132,14 +132,39 @@ data$Treatment.of.IT <- revalue(data$Treatment.of.IT, c("Ensemble "="Ensemble", 
 
 oneway.test(data$Total.Citations.by..ISI.Web.of.Science...SSCI. ~ data$Treatment.of.IT)
 kruskal.test(data$Total.Citations.by..ISI.Web.of.Science...SSCI. ~ data$Treatment.of.IT)
-TukeyHSD(data$Total.Citations.by..ISI.Web.of.Science...SSCI.,  "Treatment.of.IT", ordered = FALSE, conf.level = 0.95)
+model <- aov(data = data, formula = Total.Citations.by..ISI.Web.of.Science...SSCI. ~ Treatment.of.IT)
+TukeyHSD(model, which = "Treatment.of.IT", ordered = FALSE, conf.level = 0.95)
 
 data$Total.Citations.by..ISI.Web.of.Science...SSCI. <- mapvalues(data$Total.Citations.by..ISI.Web.of.Science...SSCI., NA, 1)
 
 data$Total.Citations.by..ISI.Web.of.Science...SSCI. <- mapvalues(data$Total.Citations.by..ISI.Web.of.Science...SSCI., 0, 1)
 
-a1 <- aov(log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.) ~ data$Treatment.of.IT)
-posthoc <- TukeyHSD(x=a1, 'data$Treatment.of.IT', conf.level=0.95)
+a1 <- aov(data$Information.Science...Library.Science.Citations..ISI.Web.of.Science...SSCI. ~ data$Unit.of.Analysis)
+posthoc1 <- TukeyHSD(x=a1, 'data$Unit.of.Analysis', conf.level=0.95)
+
+mean(data$Total.Citations.by..ISI.Web.of.Science...SSCI[data$Unit.of.Analysis=="Group"])
+mean(data$Total.Citations.by..ISI.Web.of.Science...SSCI[data$Unit.of.Analysis=="Artifact"])
+
+mean(data$Total.Citations.by..ISI.Web.of.Science...SSCI[data$Unit.of.Analysis=="Individual"])
+mean(data$Total.Citations.by..ISI.Web.of.Science...SSCI[data$Unit.of.Analysis=="Artifact"])
+
+mean(data$Total.Citations.by..ISI.Web.of.Science...SSCI[data$Unit.of.Analysis=="Market"])
+mean(data$Total.Citations.by..ISI.Web.of.Science...SSCI[data$Unit.of.Analysis=="Group"])
+
+mean(data$Total.Citations.by..ISI.Web.of.Science...SSCI[data$Unit.of.Analysis=="Individual"])
+mean(data$Total.Citations.by..ISI.Web.of.Science...SSCI[data$Unit.of.Analysis=="Market"])
+
+a2 <- aov(data$Information.Science...Library.Science.Citations..ISI.Web.of.Science...SSCI. ~ data$Treatment.of.IT)
+posthoc2 <- TukeyHSD(x=a2, 'data$Treatment.of.IT', conf.level=0.95)
+
+mean(data$Total.Citations.by..ISI.Web.of.Science...SSCI[data$Treatment.of.IT=="Computational"])
+
+mean(data$Total.Citations.by..ISI.Web.of.Science...SSCI[data$Treatment.of.IT=="Proxy"])
+mean(data$Total.Citations.by..ISI.Web.of.Science...SSCI[data$Treatment.of.IT=="Nominal"])
+
+
+a3 <- aov(data$Information.Science...Library.Science.Citations..ISI.Web.of.Science...SSCI. ~ data$Classification..Exploitation.Exploration)
+posthoc3 <- TukeyHSD(x=a3, 'data$Classification..Exploitation.Exploration', conf.level=0.95)
 
 # Comparing power-law distributions
 # http://cran.r-project.org/web/packages/poweRlaw/vignettes/compare_distributions.pdf
