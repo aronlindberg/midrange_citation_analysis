@@ -1,6 +1,8 @@
 # First we load the data for the mean-comparisons
 data <- read.csv(paste0(getwd(), "/data/middle_range_coding_v4.csv"), header = TRUE, fill = FALSE, fileEncoding = "latin1")
 
+
+
 data$Classification..instantiation..modifying..or.extending
 data$Total.Citations.by..ISI.Web.of.Science...SSCI. 
 
