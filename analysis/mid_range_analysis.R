@@ -4,13 +4,30 @@ library(poweRlaw)
 library(dunn.test)
 
 data <- read.csv("middle_range_coding_v4.csv", header = TRUE, fill = FALSE, fileEncoding = "latin1")
+data <- data[data$Year > 1994,]
 
-data$Classification..instantiation..modifying..or.extending
-data$Total.Citations.by..ISI.Web.of.Science...SSCI. 
+data$Unit.of.Analysis <- gsub(data$Unit.of.Analysis, pattern = "Indiidual", replacement = "Individual")
+data$Unit.of.Analysis <- gsub(data$Unit.of.Analysis, pattern = "Org$", replacement = "Organization")
+data$Unit.of.Analysis <- gsub(data$Unit.of.Analysis, pattern = "Firm", replacement = "Organization")
+data$Unit.of.Analysis <- gsub(data$Unit.of.Analysis, pattern = "Project", replacement = "Group")
+data$Unit.of.Analysis <- gsub(data$Unit.of.Analysis, pattern = "Group/Network", replacement = "Network")
+data$Unit.of.Analysis <- gsub(data$Unit.of.Analysis, pattern = "Organization/Network", replacement = "Network")
+data$Unit.of.Analysis <- gsub(data$Unit.of.Analysis, pattern = "Interorg", replacement = "Network")
 
-str(data$Classification..instantiation..modifying..or.extending)
+data$Unit.of.Analysis <- gsub(data$Unit.of.Analysis, pattern = "Technical", replacement = "Artifact")
+data$Unit.of.Analysis <- gsub(data$Unit.of.Analysis, pattern = "Database", replacement = "Artifact")
+data$Unit.of.Analysis <- gsub(data$Unit.of.Analysis, pattern = "Organization/Government/national level", replacement = "Government")
+data$Unit.of.Analysis <- gsub(data$Unit.of.Analysis, pattern = "Multilevel", replacement = "Other")
+data$Unit.of.Analysis <- gsub(data$Unit.of.Analysis, pattern = "Online Auction", replacement = "Other")
 
-str(data$Total.Citations.by..ISI.Web.of.Science...SSCI.)
+data$Treatment.of.IT <- gsub(data$Treatment.of.IT, pattern = "Computational ", replacement = "Computational")
+data$Treatment.of.IT <- gsub(data$Treatment.of.IT, pattern = "Tool ", replacement = "Tool")
+data$Treatment.of.IT <- gsub(data$Treatment.of.IT, pattern = "Nominal ", replacement = "Nominal")
+data$Treatment.of.IT <- gsub(data$Treatment.of.IT, pattern = "Proxy ", replacement = "Proxy")
+data$Treatment.of.IT <- gsub(data$Treatment.of.IT, pattern = "Ensemble ", replacement = "Ensemble")
+
+
+unique(data$Treatment.of.IT)
 
 ## TOTAL CITES
 extending_total_cites <- subset(data$Total.Citations.by..ISI.Web.of.Science...SSCI., data$Classification..instantiation..modifying..or.extending == "Extending")
