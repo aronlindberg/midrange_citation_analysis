@@ -26,8 +26,7 @@ data$Treatment.of.IT <- gsub(data$Treatment.of.IT, pattern = "Nominal ", replace
 data$Treatment.of.IT <- gsub(data$Treatment.of.IT, pattern = "Proxy ", replacement = "Proxy")
 data$Treatment.of.IT <- gsub(data$Treatment.of.IT, pattern = "Ensemble ", replacement = "Ensemble")
 
-
-unique(data$Treatment.of.IT)
+data$Classification..Exploitation.Exploration[data$Primary..outside.of.IS..or.Secondary..inside.of.IS..borrowing.=="Secondary"] <- "Exploitation"
 
 ## TOTAL CITES
 extending_total_cites <- subset(data$Total.Citations.by..ISI.Web.of.Science...SSCI., data$Classification..instantiation..modifying..or.extending == "Extending")
