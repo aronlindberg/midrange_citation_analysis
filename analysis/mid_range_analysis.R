@@ -138,8 +138,8 @@ data$Total.Citations.by..ISI.Web.of.Science...SSCI. <- mapvalues(data$Total.Cita
 
 data$Total.Citations.by..ISI.Web.of.Science...SSCI. <- mapvalues(data$Total.Citations.by..ISI.Web.of.Science...SSCI., 0, 1)
 
-a1 <- aov(data$Information.Science...Library.Science.Citations..ISI.Web.of.Science...SSCI. ~ data$Unit.of.Analysis)
-posthoc1 <- TukeyHSD(x=a1, 'data$Unit.of.Analysis', conf.level=0.95)
+a1 <- aov(data$Total.Citations.by..ISI.Web.of.Science...SSCI ~ data$Classification..Exploitation.Exploration)
+posthoc1 <- TukeyHSD(x=a1, 'data$Classification..Exploitation.Exploration', conf.level=0.95)
 
 mean(data$Total.Citations.by..ISI.Web.of.Science...SSCI[data$Unit.of.Analysis=="Group"])
 mean(data$Total.Citations.by..ISI.Web.of.Science...SSCI[data$Unit.of.Analysis=="Artifact"])
@@ -162,7 +162,7 @@ mean(data$Total.Citations.by..ISI.Web.of.Science...SSCI[data$Treatment.of.IT=="P
 mean(data$Total.Citations.by..ISI.Web.of.Science...SSCI[data$Treatment.of.IT=="Nominal"])
 
 
-a3 <- aov(data$Information.Science...Library.Science.Citations..ISI.Web.of.Science...SSCI. ~ data$Classification..Exploitation.Exploration)
+a3 <- aov(data$Total.Citations.by..ISI.Web.of.Science...SSCI ~ data$Classification..Exploitation.Exploration)
 posthoc3 <- TukeyHSD(x=a3, 'data$Classification..Exploitation.Exploration', conf.level=0.95)
 
 # Comparing power-law distributions
