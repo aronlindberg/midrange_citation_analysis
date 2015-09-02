@@ -3,7 +3,7 @@ library(gdata)
 library(poweRlaw)
 library(dunn.test)
 
-data <- read.csv("middle_range_coding_v4.csv", header = TRUE, fill = FALSE, fileEncoding = "latin1")
+data <- read.csv("middle_range_coding_v4_w_borrowing.csv", header = TRUE, fill = FALSE, fileEncoding = "latin1")
 data <- data[data$Year > 1994,]
 
 data$Unit.of.Analysis <- gsub(data$Unit.of.Analysis, pattern = "Indiidual", replacement = "Individual")
