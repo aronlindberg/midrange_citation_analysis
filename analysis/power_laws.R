@@ -28,10 +28,31 @@ kruskal.test(data$Total.Citations.by..ISI.Web.of.Science...SSCI. ~ data$Classifi
 
 dunn <- dunn.test(data$Total.Citations.by..ISI.Web.of.Science...SSCI., g=data$Classification..instantiation..modifying..or.extending)
 
+# Testing Zipf Law distributions
+library(zipfR)
+
+
+
 # Analysis for exploration/exploitation
 kruskal.test(data$Total.Citations.by..ISI.Web.of.Science...SSCI. ~ data$X4_Classification..Exploitation.Exploration)
 
+mean(log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$X4_Classification..Exploitation.Exploration=="Exploitation"])
+mean(log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$X4_Classification..Exploitation.Exploration=="Exploration"])
+
+mean(log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$Magnitude..none..small..medium..large=="None"])
+
+t.test(log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$Magnitude..none..small..medium..large=="None"], log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$Magnitude..none..small..medium..large=="Large"])  
+
+
+mean(log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$Magnitude..none..small..medium..large=="None"])
+
+
 dunn <- dunn.test(data$Total.Citations.by..ISI.Web.of.Science...SSCI., g=data$Classification..Exploitation.Exploration)
+
+# Distribution tests for magnitude
+t.test(log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$Classification..instantiation..modifying..or.extending=="Instantiation"], log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$Classification..instantiation..modifying..or.extending=="Extending"])
+var.test(log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$X4_Classification..Exploitation.Exploration=="Exploitation"], log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$X4_Classification..Exploitation.Exploration=="Exploration"])
+
 
 # Extracting alphas
 exploitation_total_cites[exploitation_total_cites==0] <- 1
@@ -54,16 +75,20 @@ exploitation_total_cites_h1_2013_sum_adjusted <- subset(data$Total.Citations.by.
 exploration_total_cites_h1_2013_sum_adjusted <- subset(data$Total.Citations.by..ISI.Web.of.Science...SSCI., data$X4_Classification..Exploitation.Exploration == "Exploration")/subset(data$h1_2013_sum, data$X4_Classification..Exploitation.Exploration == "Exploration")
   
   
-exploitation_total_cites_h1_2013_sum_adjusted[exploitation_total_cites_h1_2013_sum_adjusted==0] <- 1
+wilcox.test(exploitation_total_cites_h1_2013_sum_adjusted, exploration_total_cites_h1_2013_sum_adjusted)
+
+exploitation_total_cites_h1_2013_sum_adjusted <- exploitation_total_cites_h1_2013_sum_adjusted+1
 m1 <- conpl$new(exploitation_total_cites_h1_2013_sum_adjusted)
 m1$setPars(estimate_pars(m1))
 
-exploration_total_cites_h1_2013_sum_adjusted[exploration_total_cites_h1_2013_sum_adjusted==0] <- 1
+exploration_total_cites_h1_2013_sum_adjusted <- exploration_total_cites_h1_2013_sum_adjusted+1
 m2 <- conpl$new(exploration_total_cites_h1_2013_sum_adjusted)
 m2$setPars(estimate_pars(m2))
 
 m1$pars
 m2$pars
+comp12 <- compare_distributions(m1, m2)
+
 
 library(moments)
 skewness(exploitation_total_cites_h1_2013_sum_adjusted)
