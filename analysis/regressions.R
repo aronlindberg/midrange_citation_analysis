@@ -25,7 +25,7 @@ data$only_exploration_exploitation <- gsub(pattern = "-", data$X4_Classification
 # Mean differences ANCOVA for average citations and proportion of within-IS citations
 wilcox.test(exploitation_total_cites, exploration_total_cites)
 
-predict_total_citations_model <- lm(log(data$Total.Cites...last.10.years+1) ~ data$X4_Classification..Exploitation.Exploration + log(data$h1_initial_2013_average_sum) + data$Age.since.2013)
+predict_total_citations_model <- lm(log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1) ~ data$X4_Classification..Exploitation.Exploration + log(data$h1_initial_2013_average_sum) + data$Age.since.2013)
 predict_IS_citations_model <- lm(log(data$Information.Science...Library.Science.Citations..ISI.Web.of.Science...SSCI.+1) ~ data$X4_Classification..Exploitation.Exploration + log(data$h1_initial_2013_average_sum) + data$Age.since.2013)
 predict_outside_IS_citations <- lm(log(data$outside_IS_citations+1) ~ data$X4_Classification..Exploitation.Exploration + log(data$h1_initial_2013_average_sum) + data$Age.since.2013)
 

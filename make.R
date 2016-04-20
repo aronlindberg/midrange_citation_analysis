@@ -1,7 +1,7 @@
 setwd("/Users/aron/git/midrange_citation_analysis/")
 
 # This loads all the packages which are required for all other scripts
-required_packages <- c('gdata','poweRlaw','dunn.test', 'plyr', 'devtools', 'dplyr', 'tidyr', 'stringi', 'lavaan')
+required_packages <- c('gdata','poweRlaw','dunn.test', 'plyr', 'devtools', 'dplyr', 'tidyr', 'stringi', 'lavaan', 'ggvis')
 new_packages <- required_packages[!(required_packages %in% installed.packages()[,'Package'])]
 if(length(new_packages)) install.packages(new_packages)
 lapply(required_packages, library, character.only=T)
