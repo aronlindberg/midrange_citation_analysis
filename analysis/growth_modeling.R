@@ -47,19 +47,47 @@ h_index_max_author <- c(data$h1_2013_max_author[data$X4_Classification..Exploita
 # To avoid a Heywood case, I rescale the data here
 growth_data <- cbind(growth_data, h_index, h_index_max_author)
 
-# Multi-group Growth model
-model <- ' i =~ 1*t1 + 1*t2 + 1*t3 + 1*t4 + 1*t5 + 1*t6 + 1*t7 + 1*t8 + 1*t9 + 1*t10 + 1*t11 + 1*t12 + 1*t13+ 1*t14 + 1*t15 + 1*t16 + 1*t17 + 1*t18 + 1*t19 + 1*t20
+# Multi-group Growth model (latent variance of slope)
+model_UNconstrained <- ' i =~ 1*t1 + 1*t2 + 1*t3 + 1*t4 + 1*t5 + 1*t6 + 1*t7 + 1*t8 + 1*t9 + 1*t10 + 1*t11 + 1*t12 + 1*t13+ 1*t14 + 1*t15 + 1*t16 + 1*t17 + 1*t18 + 1*t19 + 1*t20
 s =~ 0*t1 + 1*t2 + 2*t3 + 3*t4 + 4*t5 + 5*t6 + 6*t7 + 7*t8 + 8*t9 + 9*t10 + 10*t11 + 11*t12 + 12*t13 + 13*t14 + 14*t15 + 15*t16 + 16*t17 + 17*t18 + 18*t19 + 19*t20
-# regressions
-s ~ h_index
-i ~ h_index
 # fixed parameters
 t8 ~~ 0.01*t8
 t17 ~~ 0.01*t17
 t18 ~~ 0.01*t18'
-fit_UNconstrained <- growth(model, data=growth_data, group = "type")
 
-fit_constrained <- growth(model, data=growth_data, group = "type", group.equal = c("lv.variances"), estimator = "ML")
+model_constrained <- ' i =~ 1*t1 + 1*t2 + 1*t3 + 1*t4 + 1*t5 + 1*t6 + 1*t7 + 1*t8 + 1*t9 + 1*t10 + 1*t11 + 1*t12 + 1*t13+ 1*t14 + 1*t15 + 1*t16 + 1*t17 + 1*t18 + 1*t19 + 1*t20
+s =~ 0*t1 + 1*t2 + 2*t3 + 3*t4 + 4*t5 + 5*t6 + 6*t7 + 7*t8 + 8*t9 + 9*t10 + 10*t11 + 11*t12 + 12*t13 + 13*t14 + 14*t15 + 15*t16 + 16*t17 + 17*t18 + 18*t19 + 19*t20
+# fixed parameters
+t8 ~~ 0.01*t8
+t17 ~~ 0.01*t17
+t18 ~~ 0.01*t18
+# constrain latent variance of the slope across groups
+s ~~ c(v1, v1)*s'
+
+fit_UNconstrained <- growth(model_UNconstrained, data=growth_data, group = "type")
+fit_constrained <- growth(model_constrained, data=growth_data, group = "type")
+
+# Multi-group Growth model (latent mean of slope)
+model_UNconstrained <- ' i =~ 1*t1 + 1*t2 + 1*t3 + 1*t4 + 1*t5 + 1*t6 + 1*t7 + 1*t8 + 1*t9 + 1*t10 + 1*t11 + 1*t12 + 1*t13+ 1*t14 + 1*t15 + 1*t16 + 1*t17 + 1*t18 + 1*t19 + 1*t20
+s =~ 0*t1 + 1*t2 + 2*t3 + 3*t4 + 4*t5 + 5*t6 + 6*t7 + 7*t8 + 8*t9 + 9*t10 + 10*t11 + 11*t12 + 12*t13 + 13*t14 + 14*t15 + 15*t16 + 16*t17 + 17*t18 + 18*t19 + 19*t20
+# fixed parameters
+t8 ~~ 0.01*t8
+t17 ~~ 0.01*t17
+t18 ~~ 0.01*t18'
+
+model_constrained <- ' i =~ 1*t1 + 1*t2 + 1*t3 + 1*t4 + 1*t5 + 1*t6 + 1*t7 + 1*t8 + 1*t9 + 1*t10 + 1*t11 + 1*t12 + 1*t13+ 1*t14 + 1*t15 + 1*t16 + 1*t17 + 1*t18 + 1*t19 + 1*t20
+s =~ 0*t1 + 1*t2 + 2*t3 + 3*t4 + 4*t5 + 5*t6 + 6*t7 + 7*t8 + 8*t9 + 9*t10 + 10*t11 + 11*t12 + 12*t13 + 13*t14 + 14*t15 + 15*t16 + 16*t17 + 17*t18 + 18*t19 + 19*t20
+# fixed parameters
+t8 ~~ 0.01*t8
+t17 ~~ 0.01*t17
+t18 ~~ 0.01*t18
+# constrain latent mean of the slope across groups
+i ~~ c(v1, v1)*i'
+
+fit_UNconstrained <- growth(model_UNconstrained, data=growth_data, group = "type")
+fit_constrained <- growth(model_constrained, data=growth_data, group = "type")
+
+
 fit_constrained_variances <- growth(model, data=growth_data, group = "type", group.equal = c("residuals", "residual.covariances", "lv.variances", "lv.covariances"))
 fit_constrained_variances_and_means <- growth(model, data=growth_data, group = "type", group.equal = c("intercepts", "residuals", "residual.covariances", "lv.variances", "lv.covariances"))
 fit_constrained_means <- growth(model, data=growth_data, group = "type", group.equal = c("means"), group.partial = c("i"))
@@ -80,16 +108,32 @@ names(growth_data_standardized)[21] <- "type"
 growth_data_standardized$type_dummy <- as.numeric(growth_data_standardized$type)-1
 
 model_regressions <- ' i =~ 1*t1 + 1*t2 + 1*t3 + 1*t4 + 1*t5 + 1*t6 + 1*t7 + 1*t8 + 1*t9 + 1*t10 + 1*t11 + 1*t12 + 1*t13+ 1*t14 + 1*t15 + 1*t16 + 1*t17 + 1*t18 + 1*t19 + 1*t20
-
-logit =~ 0*t1 + logit(1)*t2 + logit(2)*t3 + logit(3)*t4 + logit(4)*t5 + logit(5)*t6 + logit(6)*t7 + logit(7)*t8 + logit(8)*t9 + logit(9)*t10 + logit(10)*t11 + logit(11)*t12 + logit(12)*t13 + logit(13)*t14 + logit(14)*t15 + logit(15)*t16 + logit(16)*t17 + logit(17)*t18 + logit(18)*t19 + logit(19)*t20
+s =~ 0*t1 + 1*t2 + 2*t3 + 3*t4 + 4*t5 + 5*t6 + 6*t7 + 7*t8 + 8*t9 + 9*t10 + 10*t11 + 11*t12 + 12*t13 + 13*t14 + 14*t15 + 15*t16 + 16*t17 + 17*t18 + 18*t19 + 19*t20
 
 # fixing error-variances
 t8 ~~ 0.01*t8
 t17 ~~ 0.01*t17
 t18 ~~ 0.01*t18
 # regressions
-logit ~ h_index
+s ~ h_index
 i ~ h_index'
+
+model_regressions_covariates_constrained <- ' i =~ 1*t1 + 1*t2 + 1*t3 + 1*t4 + 1*t5 + 1*t6 + 1*t7 + 1*t8 + 1*t9 + 1*t10 + 1*t11 + 1*t12 + 1*t13+ 1*t14 + 1*t15 + 1*t16 + 1*t17 + 1*t18 + 1*t19 + 1*t20
+s =~ 0*t1 + 1*t2 + 2*t3 + 3*t4 + 4*t5 + 5*t6 + 6*t7 + 7*t8 + 8*t9 + 9*t10 + 10*t11 + 11*t12 + 12*t13 + 13*t14 + 14*t15 + 15*t16 + 16*t17 + 17*t18 + 18*t19 + 19*t20
+
+# fixing error-variances
+t8 ~~ 0.01*t8
+t17 ~~ 0.01*t17
+t18 ~~ 0.01*t18
+# regressions
+  s ~ h_index
+  i ~ c(v1, v1)*h_index'
+
+fit_UNconstrained_no_moderation <- growth(model_regressions, data=growth_data_standardized, group = "type")
+fit_constrained_moderation <- growth(model_regressions_covariates_constrained, data=growth_data_standardized, group = "type")
+
+
+
 
 fit_UNconstrained_no_moderation <- growth(model_regressions, data=growth_data_standardized, group = NULL)
 summary(fit_UNconstrained_no_moderation)
