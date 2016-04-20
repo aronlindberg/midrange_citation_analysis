@@ -8,11 +8,37 @@ length(data$Total.Citations.by..ISI.Web.of.Science...SSCI.[data$Classification..
 
 as.data.frame(data$Total.Citations.by..ISI.Web.of.Science...SSCI.[data$Classification..instantiation..modifying..or.extending=="Extending"]) %>% ggvis(~data$Total.Citations.by..ISI.Web.of.Science...SSCI.[data$Classification..instantiation..modifying..or.extending=="Instantiation"]) %>% layer_histograms() %>% scale_numeric("x", domain = c(0, 800), nice = FALSE, clamp = TRUE) %>% scale_numeric("x", domain = c(0, 800), nice = FALSE, clamp = TRUE)
 
+<<<<<<< HEAD
+=======
+# Testing Zipf Law distributions
+library(zipfR)
+
+
+
+# Analysis for exploration/exploitation
+>>>>>>> origin/master
 kruskal.test(data$Total.Citations.by..ISI.Web.of.Science...SSCI. ~ data$X4_Classification..Exploitation.Exploration)
 
-dunn <- dunn.test(data$Total.Citations.by..ISI.Web.of.Science...SSCI., g=data$Classification..Exploitation.Exploration)
+mean(log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$X4_Classification..Exploitation.Exploration=="Exploitation"])
+mean(log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$X4_Classification..Exploitation.Exploration=="Exploration"])
+
+mean(log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$Magnitude..none..small..medium..large=="None"])
+
+t.test(log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$Magnitude..none..small..medium..large=="None"], log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$Magnitude..none..small..medium..large=="Large"])  
+
+
+mean(log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$Magnitude..none..small..medium..large=="None"])
+
 
 dunn <- dunn.test(data$Total.Citations.by..ISI.Web.of.Science...SSCI., g=data$Classification..Exploitation.Exploration)
+
+<<<<<<< HEAD
+dunn <- dunn.test(data$Total.Citations.by..ISI.Web.of.Science...SSCI., g=data$Classification..Exploitation.Exploration)
+=======
+# Distribution tests for magnitude
+t.test(log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$Classification..instantiation..modifying..or.extending=="Instantiation"], log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$Classification..instantiation..modifying..or.extending=="Extending"])
+var.test(log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$X4_Classification..Exploitation.Exploration=="Exploitation"], log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.+1)[data$X4_Classification..Exploitation.Exploration=="Exploration"])
+>>>>>>> origin/master
 
 
 # Extracting alphas
@@ -36,16 +62,20 @@ exploitation_total_cites_h1_2013_sum_adjusted <- subset(data$Total.Citations.by.
 exploration_total_cites_h1_2013_sum_adjusted <- subset(data$Total.Citations.by..ISI.Web.of.Science...SSCI., data$X4_Classification..Exploitation.Exploration == "Exploration")/subset(data$h1_initial_2013_average_sum, data$X4_Classification..Exploitation.Exploration == "Exploration")
   
   
-exploitation_total_cites_h1_2013_sum_adjusted[exploitation_total_cites_h1_2013_sum_adjusted==0] <- 1
+wilcox.test(exploitation_total_cites_h1_2013_sum_adjusted, exploration_total_cites_h1_2013_sum_adjusted)
+
+exploitation_total_cites_h1_2013_sum_adjusted <- exploitation_total_cites_h1_2013_sum_adjusted+1
 m1 <- conpl$new(exploitation_total_cites_h1_2013_sum_adjusted)
 m1$setPars(estimate_pars(m1))
 
-exploration_total_cites_h1_2013_sum_adjusted[exploration_total_cites_h1_2013_sum_adjusted==0] <- 1
+exploration_total_cites_h1_2013_sum_adjusted <- exploration_total_cites_h1_2013_sum_adjusted+1
 m2 <- conpl$new(exploration_total_cites_h1_2013_sum_adjusted)
 m2$setPars(estimate_pars(m2))
 
 m1$pars
 m2$pars
+comp12 <- compare_distributions(m1, m2)
+
 
 compare_distributions(m1, m2)
 

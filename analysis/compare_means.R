@@ -35,6 +35,10 @@ data$Total.Citations.by..ISI.Web.of.Science...SSCI. <- subset(data$Total.Citatio
 a0 <- aov(log(data$Total.Citations.by..ISI.Web.of.Science...SSCI.) ~ data$Classification..instantiation..modifying..or.extending)
 posthoc <- TukeyHSD(x=a0, 'data$Classification..instantiation..modifying..or.extending', conf.level=0.95)
 
+# Test size of change
+size_change <- aov(data$Total.Citations.by..ISI.Web.of.Science...SSCI. ~ data$Magnitude..none..small..medium..large)
+
+
 ## IS CITES
 extending_IS_cites <- subset(data$Information.Science...Library.Science.Citations..ISI.Web.of.Science...SSCI., data$Classification..instantiation..modifying..or.extending == "Extending")
 

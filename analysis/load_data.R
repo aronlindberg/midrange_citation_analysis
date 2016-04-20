@@ -1,5 +1,5 @@
 # First we load the data for the mean-comparisons
-data <- read.csv(paste0(getwd(), "/data/data_w_h1_indices.csv"), header = TRUE, fill = FALSE, fileEncoding = "latin1")
+data <- read.csv(paste0(wd, "/data/data_w_h1_indices.csv"), header = TRUE, fill = FALSE, fileEncoding = "latin1")
 
 ## Crunch data for total cites
 exploitation_total_cites <- subset(data$Total.Citations.by..ISI.Web.of.Science...SSCI., data$X2_Classification..Exploitation.Exploration == "Exploitation")
